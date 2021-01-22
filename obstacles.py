@@ -16,9 +16,9 @@ class Enemy:
     def __init__(self, pos):
         self.x = pos[0]
         self.y = pos[1]
-        self.speed = 10
-        self.width = 50
-        self.hight = 50
+        self.speed = 5
+        self.width = 25
+        self.hight = 25
 
     def move(self, target_pos):
         dx = target_pos[0] - self.x
@@ -52,7 +52,7 @@ class Board_limits:
     def is_collition(self, target_pos):
         x = target_pos[0]
         y = target_pos[1]
-        if x < self.t or x > self.t + self.width - 50 or y < self.t or y > self.t + self.hight - 50:
+        if x < self.t or x > self.t + self.width - 25 or y < self.t or y > self.t + self.hight - 25:
             return True
         else:
             return False

@@ -7,9 +7,9 @@ class Car:
     def __init__(self, start_position):
         self.x = start_position[0]
         self.y = start_position[1]
-        self.width = 50
-        self.hight = 50
-        self.speed = 15
+        self.width = 25
+        self.hight = 25
+        self.speed = 7.5
         self.angle = 0
         self.dth = math.pi * (1 / 6)
 

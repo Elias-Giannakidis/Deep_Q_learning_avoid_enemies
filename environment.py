@@ -3,6 +3,7 @@ import Colors as c
 import car
 import obstacles
 import random
+import math
 
 # if you want to see or not the environment
 show = True
@@ -12,27 +13,30 @@ done = False
 WIDTH = 800
 HEIGHT = 800
 
+def rand():
+    return random.uniform(-15, 15)
+
 # Define the agents
-mCar = car.Car((WIDTH / 2 - 25, HEIGHT / 2 - 25))
-mEnemy1 = obstacles.Enemy([0, 0])
-mEnemy2 = obstacles.Enemy([WIDTH, HEIGHT])
-mEnemy3 = obstacles.Enemy([WIDTH, 0])
-mEnemy4 = obstacles.Enemy([0, HEIGHT])
+mCar = car.Car((WIDTH / 2 - 25 + rand(), HEIGHT / 2 - 25 + rand()))
+mEnemy1 = obstacles.Enemy([0 + rand(), 0 + rand()])
+mEnemy2 = obstacles.Enemy([WIDTH + rand(), HEIGHT + rand()])
+mEnemy3 = obstacles.Enemy([WIDTH + rand(), 0 + rand()])
+mEnemy4 = obstacles.Enemy([0 + rand(), HEIGHT + rand()])
 mLimits = obstacles.Board_limits(WIDTH, HEIGHT)
 
 # Define the pygame window
 pygame.init()
 win = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption("BALANCE")
+pygame.display.set_caption("AVOID ENEMIES")
 clock = pygame.time.Clock()
 pygame.quit()
 
 def get_state():
-    state = [[mCar.x, mCar.y, mCar.angle,
-             mEnemy1.x, mEnemy1.y,
-             mEnemy2.x, mEnemy2.y,
-             mEnemy3.x, mEnemy3.y,
-             mEnemy4.x, mEnemy4.y]]
+    state = [[mCar.x/WIDTH, mCar.y/HEIGHT, mCar.angle/math.pi,
+              (mEnemy1.x - mCar.x)/WIDTH, (mEnemy1.y - mCar.y)/HEIGHT,
+             (mEnemy2.x - mCar.x)/WIDTH, (mEnemy2.y - mCar.y)/HEIGHT,
+             (mEnemy3.x - mCar.x)/WIDTH, (mEnemy3.y - mCar.y)/HEIGHT,
+             (mEnemy4.x - mCar.x)/WIDTH, (mEnemy4.y - mCar.y)/HEIGHT]]
     return state
 
 def step(action):
@@ -82,17 +86,18 @@ def close():
     pygame.quit()
 
 def reset():
+
     # Restart the agents
     global mCar
-    mCar = car.Car((WIDTH / 2 - 25, HEIGHT / 2 - 25))
+    mCar = car.Car((WIDTH / 2 - 25 + rand(), HEIGHT / 2 - 25 + rand()))
     global mEnemy1
-    mEnemy1 = obstacles.Enemy([0, 0])
+    mEnemy1 = obstacles.Enemy([0 + rand(), 0 + rand()])
     global mEnemy2
-    mEnemy2 = obstacles.Enemy([WIDTH, HEIGHT])
+    mEnemy2 = obstacles.Enemy([WIDTH + rand(), HEIGHT + rand()])
     global mEnemy3
-    mEnemy3 = obstacles.Enemy([WIDTH, 0])
+    mEnemy3 = obstacles.Enemy([WIDTH + rand(), 0 + rand()])
     global mEnemy4
-    mEnemy4 = obstacles.Enemy([0, HEIGHT])
+    mEnemy4 = obstacles.Enemy([0 + rand(), HEIGHT + rand()])
 
     # Define the pygame window
     pygame.init()
@@ -109,7 +114,7 @@ def get_reward():
     if not done:
         return 1
     else:
-        return -10
+        return -1000
 
 def sample():
     return random.randint(0, 2)
