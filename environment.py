@@ -31,12 +31,27 @@ pygame.display.set_caption("AVOID ENEMIES")
 clock = pygame.time.Clock()
 pygame.quit()
 
+def get_distances(enemy):
+    dx = enemy.x - mCar.x
+    dy = enemy.y - mCar.y
+    ds = math.sqrt(math.pow(dx, 2) + math.pow(dy, 2))
+    th = math.atan2(dy, dx)
+    dth = th + mCar.angle
+    dx = ds * math.cos(dth)
+    dy = ds * math.sin(dth)
+    return(dx, dy)
+
 def get_state():
+    d1 = get_distances(mEnemy1)
+    d2 = get_distances(mEnemy2)
+    d3 = get_distances(mEnemy3)
+    d4 = get_distances(mEnemy4)
+
     state = [[mCar.x/WIDTH, mCar.y/HEIGHT, mCar.angle/math.pi,
-              (mEnemy1.x - mCar.x)/WIDTH, (mEnemy1.y - mCar.y)/HEIGHT,
-             (mEnemy2.x - mCar.x)/WIDTH, (mEnemy2.y - mCar.y)/HEIGHT,
-             (mEnemy3.x - mCar.x)/WIDTH, (mEnemy3.y - mCar.y)/HEIGHT,
-             (mEnemy4.x - mCar.x)/WIDTH, (mEnemy4.y - mCar.y)/HEIGHT]]
+              d1[0]/WIDTH, d1[1]/HEIGHT,
+             d2[0]/WIDTH, d2[1]/HEIGHT,
+             d3[0]/WIDTH, d3[1]/HEIGHT,
+             d4[0]/WIDTH, d4[1]/HEIGHT]]
     return state
 
 def step(action):
@@ -103,7 +118,7 @@ def reset():
     pygame.init()
     global win
     win = pygame.display.set_mode([WIDTH, HEIGHT])
-    pygame.display.set_caption("BALANCE")
+    pygame.display.set_caption("AVOID ENEMIES")
     global clock
     clock = pygame.time.Clock()
 
